@@ -1,6 +1,6 @@
 namespace Respify.Interfaces;
 
-public interface IHttpResponse<T>
+public interface IRespifyResponse<T>
 {
     public T? Data { get; set; }
     public string? Message { get; set; }

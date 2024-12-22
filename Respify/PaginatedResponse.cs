@@ -2,7 +2,7 @@ using Respify.Interfaces;
 
 namespace Respify;
 
-public class PaginatedData<T>: IPaginatedData<T>
+public class PaginatedResponse<T>: IPaginatedResponse<T>
 {
     public T Items { get; set; } 
     public int Total { get; set; }

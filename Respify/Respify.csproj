@@ -4,6 +4,13 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>Respify</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Carlos Brunetti</Authors>
+        <Description>A library to standardize API responses.</Description>
+        <PackageTags>API, Response, Standardization</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/carlosbrunetti/Respify</RepositoryUrl>
     </PropertyGroup>
 
 </Project>

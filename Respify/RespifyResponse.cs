@@ -3,13 +3,29 @@ using Respify.Interfaces;
 
 namespace Respify;
 
-public class RespifyResponse<T>(T? data, string? message, bool success, int statusCode, List<string>? errors)
-    : IHttpResponse<T>
+public class RespifyResponse<T>: IRespifyResponse<T>
 {
-    public T? Data { get; set; } = data;
-    public string? Message { get; set; } = message;
-    public bool Success { get; set; } = success;
+    public RespifyResponse(T? data, string? message, bool success, int statusCode, List<string>? errors)
+    {
+        Data = data;
+        Message = message;
+        Success = success;
+        StatusCode = statusCode;
+        Errors = errors;
+    }
+    
+    public RespifyResponse(T? data, string message, bool success, int statusCode)
+    {
+        Data = data;
+        Message = message;
+        Success = success;
+        StatusCode = statusCode;
+    }
+    
+    public T? Data { get; set; }
+    public string? Message { get; set; }
+    public bool Success { get; set; }
     [JsonIgnore]
-    public int StatusCode { get; set; } = statusCode;
-    public List<string>? Errors { get; set; } = errors;
+    public int StatusCode { get; set; }
+    public List<string>? Errors { get; set; }
 }
