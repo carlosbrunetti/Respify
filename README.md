@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="respify.jpeg" alt="Project Logo" width="400" height="400">
+</p>
+
 # Respify
 
 Respify is a C# library designed to standardize API responses. It provides a consistent structure for both paginated and non-paginated data, making it easier to handle API responses in a uniform way.
