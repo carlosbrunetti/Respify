@@ -9,7 +9,7 @@ namespace Tests;
 public class ResponseHelperTests
 {
     [Fact]
-    public void Success_PaginatedResponseWithCustomStatusCode_ReturnsSuccessResponse()
+    public void Success_PaginatedResponse_ReturnsSuccessResponse()
     {
         var cars = new CarGenerator().GenerateCarList(10);
         var paginatedResponse = new PaginatedResponse<List<Car>>(cars, cars.Count, 1, 10, "Id", "asc");
@@ -23,7 +23,7 @@ public class ResponseHelperTests
     }
 
     [Fact]
-    public void Success_NonPaginatedResponseWithCustomStatusCode_ReturnsSuccessResponse()
+    public void Success_NonPaginatedResponse_ReturnsSuccessResponse()
     {
         var cars = new CarGenerator().GenerateCarList(10);
         var nonPaginatedResponse = new NonPaginatedResponse<List<Car>>(cars, cars.Count);
@@ -37,14 +37,14 @@ public class ResponseHelperTests
     }
 
     [Fact]
-    public void CreateResponse_NullMessage_ReturnsResponseWithNullMessage()
+    public void CreateResponse_WithNullMessage_ReturnsResponseWithNullMessage()
     {
         var data = new Faker().Lorem.Sentence();
-        var result = ResponseHelper.CreateResponse(data, "Created", 201, true,null);
+        var result = ResponseHelper.CreateResponse(data, null, 201, true,null);
 
         Assert.True(result.Success);
         Assert.Equal(201, result.StatusCode);
-        Assert.NotNull(result.Message);
+        Assert.Null(result.Message);
         Assert.Equal(data, result.Data);
         Assert.True(result.Errors == null);
     }
@@ -71,6 +71,18 @@ public class ResponseHelperTests
         Assert.False(result.Success);
         Assert.Equal(500, result.StatusCode);
         Assert.Equal("Failure", result.Message);
+        Assert.True(result.Errors is { Count: > 0 });
+    }
+    
+    [Fact]
+    public void Failure_WithNoMessageWithErrors_ReturnsFailureResponse()
+    {
+        var errors = new Faker<string>().CustomInstantiator(x => x.Lorem.Sentence()).Generate(10);
+        var result = ResponseHelper.Failure<object>(null,null,errors);
+
+        Assert.False(result.Success);
+        Assert.Equal(400, result.StatusCode);
+        Assert.Null(result.Message);
         Assert.True(result.Errors is { Count: > 0 });
     }
 }

@@ -11,26 +11,26 @@ public static class ResponseHelper
     /// Generates a success response for paginated data.
     /// </summary>
     /// <typeparam name="T">The type of the data items.</typeparam>
-    /// <param name="response">The paginated response data.</param>
+    /// <param name="data">The paginated response data.</param>
     /// <param name="message">The success message.</param>
     /// <param name="statusCode">The HTTP status code (default is 200).</param>
     /// <returns>A standardized success response.</returns>
-    public static RespifyResponse<IPaginatedResponse<T>> Success<T>(PaginatedResponse<T> response, string message, int statusCode = 200)
+    public static RespifyResponse<IPaginatedResponse<T>> Success<T>(PaginatedResponse<T> data, string message, int statusCode = 200)
     {
-        return new RespifyResponse<IPaginatedResponse<T>>(response, message, true, statusCode, null);
+        return new RespifyResponse<IPaginatedResponse<T>>(data, message, true, statusCode, null);
     }
 
     /// <summary>
     /// Generates a success response for non-paginated data.
     /// </summary>
     /// <typeparam name="T">The type of the data items.</typeparam>
-    /// <param name="response">The non-paginated response data.</param>
+    /// <param name="data">The non-paginated response data.</param>
     /// <param name="message">The success message.</param>
     /// <param name="statusCode">The HTTP status code (default is 200).</param>
     /// <returns>A standardized success response.</returns>
-    public static RespifyResponse<INonPaginatedResponse<T>> Success<T>(NonPaginatedResponse<T> response, string message, int statusCode = 200)
+    public static RespifyResponse<INonPaginatedResponse<T>> Success<T>(NonPaginatedResponse<T> data, string message, int statusCode = 200)
     {
-        return new RespifyResponse<INonPaginatedResponse<T>>(response, message, true, statusCode, null);
+        return new RespifyResponse<INonPaginatedResponse<T>>(data, message, true, statusCode, null);
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public static class ResponseHelper
     /// <param name="success">Indicates if the response is successful.</param>
     /// <param name="errors">A list of errors (if any).</param>
     /// <returns>A standardized response.</returns>
-    public static RespifyResponse<T> CreateResponse<T>(T data, string message, int statusCode, bool success, List<string> errors)
+    public static RespifyResponse<T> CreateResponse<T>(T data, string? message, int statusCode, bool success, List<string>? errors)
     {
         return new RespifyResponse<T>(data, message, success, statusCode, errors);
     }
@@ -74,5 +74,4 @@ public static class ResponseHelper
     {
         return new RespifyResponse<T>(data, message, false, statusCode, errors);
     }
-    
 }

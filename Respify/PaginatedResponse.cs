@@ -8,16 +8,16 @@ public class PaginatedResponse<T>: IPaginatedResponse<T>
     {
         Items = items;
         Count = total;
-        Page = page;
+        PageNumber = page;
         PageSize = pageSize;
         OrderBy = orderBy;
-        Sort = sort;
+        SortBy = sort;
     }
     
     public T Items { get; set; } 
     public int Count { get; set; }
-    public int Page { get; set; } 
+    public int PageNumber { get; set; } 
     public int PageSize { get; set; }
     public string OrderBy { get; set; }
-    public string Sort { get; set; }
+    public string SortBy { get; set; }
 }
