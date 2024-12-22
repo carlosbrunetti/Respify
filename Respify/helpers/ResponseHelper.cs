@@ -43,7 +43,7 @@ public static class ResponseHelper
     /// <param name="success">Indicates if the response is successful.</param>
     /// <param name="errors">A list of errors (if any).</param>
     /// <returns>A standardized response.</returns>
-    public static RespifyResponse<T> CreateResponse<T>(T data, string? message, int statusCode, bool success, List<string>? errors)
+    public static RespifyResponse<T> CreateResponse<T>(T? data, string? message, int statusCode, bool success, List<string>? errors)
     {
         return new RespifyResponse<T>(data, message, success, statusCode, errors);
     }

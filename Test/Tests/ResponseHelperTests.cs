@@ -39,13 +39,24 @@ public class ResponseHelperTests
     [Fact]
     public void CreateResponse_WithNullMessage_ReturnsResponseWithNullMessage()
     {
-        var data = new Faker().Lorem.Sentence();
-        var result = ResponseHelper.CreateResponse(data, null, 201, true,null);
+        var car = new CarGenerator().GenerateCar();
+        var result = ResponseHelper.CreateResponse(car, null, 201, true,null);
 
         Assert.True(result.Success);
         Assert.Equal(201, result.StatusCode);
         Assert.Null(result.Message);
-        Assert.Equal(data, result.Data);
+        Assert.True(result.Errors == null);
+    }
+    
+    [Fact]
+    public void CreateResponse_WithNullData_ReturnsResponseWithNullData()
+    {
+        var result = ResponseHelper.CreateResponse<Car>(null, "Success", 201, true,null);
+
+        Assert.Null(result.Data);
+        Assert.True(result.Success);
+        Assert.Equal(201, result.StatusCode);
+        Assert.Equal("Success", result.Message);
         Assert.True(result.Errors == null);
     }
 
