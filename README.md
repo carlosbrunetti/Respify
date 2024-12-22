@@ -86,8 +86,14 @@ var response = ResponseHelper.CreateResponse<object>(Data: null, Message: "messa
 Represents non-paginated data.
 
 ```csharp
-public class NonPaginatedData<T>
+public class NonPaginatedResponse<T> : INonPaginatedResponse<T>
 {
+    public NonPaginatedResponse(T items, int total)
+    {
+        Items = items;
+        Count = total;
+    }
+
     public T Items { get; set; }
     public int Count { get; set; }
 }
@@ -98,8 +104,18 @@ public class NonPaginatedData<T>
 Represents paginated data.
 
 ```csharp
-public class PaginatedData<T>
+public class PaginatedResponse<T>: IPaginatedResponse<T>
 {
+    public PaginatedResponse(T items, int total, int page, int pageSize, string orderBy, string sort)
+    {
+        Items = items;
+        Count = total;
+        PageNumber = page;
+        PageSize = pageSize;
+        OrderBy = orderBy;
+        SortBy = sort;
+    }
+
     public T Items { get; set; }
     public int Count { get; set; }
     public int PageNumber { get; set; }
@@ -108,8 +124,40 @@ public class PaginatedData<T>
     public string SortBy { get; set; }
 }
 ```
+### RespifyResponse<T>
+
+Represents a standardized API response.
 
 ### ResponseHelper
+
+```csharp
+public class RespifyResponse<T> : IRespifyResponse<T>
+{
+    public RespifyResponse(T? data, string? message, bool success, int statusCode, List<string>? errors)
+    {
+        Data = data;
+        Message = message;
+        Success = success;
+        StatusCode = statusCode;
+        Errors = errors;
+    }
+
+    public RespifyResponse(T? data, string message, bool success, int statusCode)
+    {
+        Data = data;
+        Message = message;
+        Success = success;
+        StatusCode = statusCode;
+    }
+
+    public T? Data { get; set; }
+    public string? Message { get; set; }
+    public bool Success { get; set; }
+    [JsonIgnore]
+    public int StatusCode { get; set; }
+    public List<string>? Errors { get; set; }
+}
+```
 
 Provides helper methods to generate standardized API responses.
 
