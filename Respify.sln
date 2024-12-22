@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Respify", "Respify\Respify.csproj", "{1C7717A5-5DDC-4D0E-9886-5B2E368842F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Test\Tests\Tests.csproj", "{98FE6CF2-5D6E-4661-B865-521EBED175DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C7717A5-5DDC-4D0E-9886-5B2E368842F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C7717A5-5DDC-4D0E-9886-5B2E368842F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C7717A5-5DDC-4D0E-9886-5B2E368842F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C7717A5-5DDC-4D0E-9886-5B2E368842F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98FE6CF2-5D6E-4661-B865-521EBED175DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98FE6CF2-5D6E-4661-B865-521EBED175DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98FE6CF2-5D6E-4661-B865-521EBED175DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98FE6CF2-5D6E-4661-B865-521EBED175DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
