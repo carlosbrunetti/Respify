@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="respify.jpeg" alt="Project Logo" width="400" height="400">
+    <img src="images/respify.jpeg" alt="Project Logo" width="400" height="400">
 </p>
 
 # Respify
@@ -74,13 +74,77 @@ using Respify.helpers;
 int id = 1;
 var response = ResponseHelper.CreateResponse(Data: id, Message: "message", StatusCode: 201, Success: true, Errors: null);
 ```
-
 Or
-
 ```csharp
 var response = ResponseHelper.CreateResponse<object>(Data: null, Message: "message", StatusCode: 201, Success: true, Errors: null);
+```
+## Converting Response to ObjectResult
+Using ToResult() and ToResultAsync() methods, you can convert the response to an ObjectResult.
 
+```csharp
+var response = new RespifyResponse<string>("data", "Operation successful", true, 200);
+var result = response.ToResult();
+```
+### Asynchronous Response Conversion
+```csharp
+var response = new RespifyResponse<string>("data", "Operation successful", true, 200);
+var result = await response.ToResultAsync();
+```
 
+## Json Output
+
+### Paginated Response
+
+```json
+{
+    "data": {
+        "items": [],
+        "count": 0,
+        "pageNumber": 1,
+        "pageSize": 15,
+        "orderBy": "Make",
+        "sortBy": "desc"
+    },
+    "message": "Success",
+    "success": true,
+    "errors": null
+}
+
+```
+
+### Non-Paginated Response
+
+```json
+{
+    "data": {
+        "items": [],
+        "count": 0
+    },
+    "message": "Success",
+    "success": true,
+    "errors": null
+}
+```
+
+### Custom Response
+
+```json
+{
+  "data": 1,
+  "message": "Created",
+  "success": true,
+  "errors": null
+}
+```
+### Failure Response
+
+```json
+{
+  "data": null,
+  "message": "",
+  "success": false,
+  "errors": ["Error 1", "Error 2"]
+}
 ```
 
 ## Classes
@@ -90,15 +154,27 @@ var response = ResponseHelper.CreateResponse<object>(Data: null, Message: "messa
 Represents non-paginated data.
 
 ```csharp
+/// <summary>
+/// Represents a non-paginated response.
+/// </summary>
+/// <typeparam name="T">The type of the items in the response.</typeparam>
 public class NonPaginatedResponse<T> : INonPaginatedResponse<T>
 {
-    public NonPaginatedResponse(T items, int total)
-    {
-        Items = items;
-        Count = total;
-    }
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NonPaginatedResponse{T}"/> class.
+    /// </summary>
+    /// <param name="items">The items in the response.</param>
+    /// <param name="total">The total count of items in the response.</param>
+    public NonPaginatedResponse(T items, int total) => (Items, Count) = (items, total);
+    
+    /// <summary>
+    /// Gets or sets the items in the response.
+    /// </summary>
     public T Items { get; set; }
+
+    /// <summary>
+    /// Gets or sets the count of items in the response.
+    /// </summary>
     public int Count { get; set; }
 }
 ```
@@ -108,8 +184,21 @@ public class NonPaginatedResponse<T> : INonPaginatedResponse<T>
 Represents paginated data.
 
 ```csharp
-public class PaginatedResponse<T>: IPaginatedResponse<T>
+/// <summary>
+/// Represents a paginated response.
+/// </summary>
+/// <typeparam name="T">The type of the items in the response.</typeparam>
+public class PaginatedResponse<T> : IPaginatedResponse<T>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PaginatedResponse{T}"/> class.
+    /// </summary>
+    /// <param name="items">The items in the response.</param>
+    /// <param name="total">The total count of items in the response.</param>
+    /// <param name="page">The current page number.</param>
+    /// <param name="pageSize">The size of the page.</param>
+    /// <param name="orderBy">The field by which the items are ordered.</param>
+    /// <param name="sort">The field by which the items are sorted.</param>
     public PaginatedResponse(T items, int total, int page, int pageSize, string orderBy, string sort)
     {
         Items = items;
@@ -120,11 +209,34 @@ public class PaginatedResponse<T>: IPaginatedResponse<T>
         SortBy = sort;
     }
 
+    /// <summary>
+    /// Gets or sets the items in the response.
+    /// </summary>
     public T Items { get; set; }
+
+    /// <summary>
+    /// Gets or sets the count of items in the response.
+    /// </summary>
     public int Count { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current page number.
+    /// </summary>
     public int PageNumber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the size of the page.
+    /// </summary>
     public int PageSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the field by which the items are ordered.
+    /// </summary>
     public string OrderBy { get; set; }
+
+    /// <summary>
+    /// Gets or sets the field by which the items are sorted.
+    /// </summary>
     public string SortBy { get; set; }
 }
 ```
@@ -132,11 +244,21 @@ public class PaginatedResponse<T>: IPaginatedResponse<T>
 
 Represents a standardized API response.
 
-### ResponseHelper
-
 ```csharp
+/// <summary>
+/// Represents a standardized response object used in the Respify framework.
+/// </summary>
+/// <typeparam name="T">The type of the data being returned in the response.</typeparam>
 public class RespifyResponse<T> : IRespifyResponse<T>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RespifyResponse{T}"/> class.
+    /// </summary>
+    /// <param name="data">The data being returned in the response.</param>
+    /// <param name="message">The message associated with the response.</param>
+    /// <param name="success">A value indicating whether the response indicates a successful operation.</param>
+    /// <param name="statusCode">The HTTP status code associated with the response.</param>
+    /// <param name="errors">A list of errors associated with the response.</param>
     public RespifyResponse(T? data, string? message, bool success, int statusCode, List<string>? errors)
     {
         Data = data;
@@ -146,6 +268,13 @@ public class RespifyResponse<T> : IRespifyResponse<T>
         Errors = errors;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RespifyResponse{T}"/> class.
+    /// </summary>
+    /// <param name="data">The data being returned in the response.</param>
+    /// <param name="message">The message associated with the response.</param>
+    /// <param name="success">A value indicating whether the response indicates a successful operation.</param>
+    /// <param name="statusCode">The HTTP status code associated with the response.</param>
     public RespifyResponse(T? data, string message, bool success, int statusCode)
     {
         Data = data;
@@ -154,15 +283,58 @@ public class RespifyResponse<T> : IRespifyResponse<T>
         StatusCode = statusCode;
     }
 
+    /// <summary>
+    /// Gets or sets the data being returned in the response.
+    /// </summary>
     public T? Data { get; set; }
+
+    /// <summary>
+    /// Gets or sets the message associated with the response.
+    /// </summary>
     public string? Message { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the response indicates a successful operation.
+    /// </summary>
     public bool Success { get; set; }
+
+    /// <summary>
+    /// Gets or sets the HTTP status code associated with the response.
+    /// </summary>
     [JsonIgnore]
     public int StatusCode { get; set; }
+
+    /// <summary>
+    /// Gets or sets a list of errors associated with the response.
+    /// </summary>
     public List<string>? Errors { get; set; }
+
+    /// <summary>
+    /// Converts the response to an <see cref="ObjectResult"/>.
+    /// </summary>
+    /// <returns>An <see cref="ObjectResult"/> representing the response.</returns>
+    public ObjectResult ToResult()
+    {
+        return new ObjectResult(this)
+        {
+            StatusCode = this.StatusCode
+        };
+    }
+
+    /// <summary>
+    /// Asynchronously converts the response to an <see cref="ObjectResult"/>.
+    /// </summary>
+    /// <returns>A <see cref="Task{TResult}"/> representing the asynchronous operation, with an <see cref="ObjectResult"/> as the result.</returns>
+    public async Task<ObjectResult> ToResultAsync()
+    {
+        return await Task.FromResult(new ObjectResult(this)
+        {
+            StatusCode = this.StatusCode
+        });
+    }
 }
 ```
-
+### ResponseHelper
 Provides helper methods to generate standardized API responses.
 
 ```csharp

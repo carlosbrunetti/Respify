@@ -70,7 +70,7 @@ public static class ResponseHelper
     /// <param name="errors">A list of errors.</param>
     /// <param name="statusCode">The HTTP status code (default is 400).</param>
     /// <returns>A standardized failure response.</returns>
-    public static RespifyResponse<T> Failure<T>(T? data, string message, List<string> errors, int statusCode = 400)
+    public static RespifyResponse<T> Failure<T>(T? data, string? message, List<string> errors, int statusCode = 400)
     {
         return new RespifyResponse<T>(data, message, false, statusCode, errors);
     }
