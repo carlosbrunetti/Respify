@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>Respify</PackageId>
-        <Version>1.0.1</Version>
+        <Version>1.1.0</Version>
         <PackageIcon>respify-icon.jpeg</PackageIcon>
         <Authors>Carlos Brunetti</Authors>
         <Description>A library to standardize API responses.</Description>
