@@ -1,7 +1,7 @@
 using Bogus;
-using Tests.helpers.@class;
+using Respify.Tests.helpers.@class;
 
-namespace Tests.helpers.generator;
+namespace Respify.Tests.helpers.generator;
 
 public class CarGenerator
 {
