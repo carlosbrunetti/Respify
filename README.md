@@ -8,7 +8,6 @@ Respify is a C# library designed to standardize API responses. It provides a con
 
 [![NuGet](https://img.shields.io/nuget/v/Respify.svg)](https://www.nuget.org/packages/Respify/)
 [![NuGet](https://img.shields.io/nuget/dt/Respify.svg)](https://www.nuget.org/packages/Respify/)
-[![Build Status](https://dev.azure.com/respify/Respify/_apis/build/status/Respify-CI?branchName=main)](https://dev.azure.com/respify/Respify/_build/latest?definitionId=1&branchName=main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=alert_status)](https://sonarcloud.io/dashboard?id=Respify)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=coverage)](https://sonarcloud.io/dashboard?id=Respify)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=bugs)](https://sonarcloud.io/dashboard?id=Respify)
