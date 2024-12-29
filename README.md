@@ -6,6 +6,19 @@
 
 Respify is a C# library designed to standardize API responses. It provides a consistent structure for both paginated and non-paginated data, making it easier to handle API responses in a uniform way.
 
+[![NuGet](https://img.shields.io/nuget/v/Respify.svg)](https://www.nuget.org/packages/Respify/)
+[![NuGet](https://img.shields.io/nuget/dt/Respify.svg)](https://www.nuget.org/packages/Respify/)
+[![Build Status](https://dev.azure.com/respify/Respify/_apis/build/status/Respify-CI?branchName=main)](https://dev.azure.com/respify/Respify/_build/latest?definitionId=1&branchName=main)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=alert_status)](https://sonarcloud.io/dashboard?id=Respify)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=coverage)](https://sonarcloud.io/dashboard?id=Respify)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=bugs)](https://sonarcloud.io/dashboard?id=Respify)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Respify)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Respify&metric=code_smells)](https://sonarcloud.io/dashboard?id=Respify)
+<!-- sonar_coverage -->Coverage: 0%
+<!-- sonar_bugs -->Bugs: 0
+<!-- sonar_vulnerabilities -->Vulnerabilities: 0
+<!-- sonar_code_smells -->Code Smells: 0
+
 ## Installation
 
 To install Respify, you can add it to your project via NuGet Package Manager:

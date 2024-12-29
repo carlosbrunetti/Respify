@@ -62,29 +62,38 @@ jobs:
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           DOTNET_ROOT: /home/runner/.dotnet
-            
 
-  publish:
-    if: github.ref == 'refs/heads/main'
-    runs-on: windows-latest
-    needs: [build, sonar_scan]
+  update_readme:
+    runs-on: ubuntu-latest
+    needs: sonar_scan
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Extract version
-        id: extract_version
+      - name: Fetch SonarQube metrics
+        id: fetch_sonar_metrics
         run: |
-          version=$(cat Respify/Respify.csproj | grep '<Version>' | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')
-          echo "##[set-output name=VERSION;]$version"
+          curl -u ${{ secrets.SONAR_TOKEN }}: \
+            "${{ secrets.SONAR_HOST_URL }}/api/measures/component?component=${{ secrets.SONAR_PROJECT_KEY }}&metricKeys=coverage,bugs,vulnerabilities,code_smells" \
+            -o sonar_metrics.json
 
-      - name: Publish to NuGet
-        run: dotnet nuget push Respify/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      - name: Update README.md
+        run: |
+          coverage=$(jq -r '.component.measures[] | select(.metric == "coverage") | .value' sonar_metrics.json)
+          bugs=$(jq -r '.component.measures[] | select(.metric == "bugs") | .value' sonar_metrics.json)
+          vulnerabilities=$(jq -r '.component.measures[] | select(.metric == "vulnerabilities") | .value' sonar_metrics.json)
+          code_smells=$(jq -r '.component.measures[] | select(.metric == "code_smells") | .value' sonar_metrics.json)
+
+          sed -i "s/<!-- sonar_coverage -->.*/<!-- sonar_coverage -->Coverage: $coverage%/" README.md
+          sed -i "s/<!-- sonar_bugs -->.*/<!-- sonar_bugs -->Bugs: $bugs/" README.md
+          sed -i "s/<!-- sonar_vulnerabilities -->.*/<!-- sonar_vulnerabilities -->Vulnerabilities: $vulnerabilities/" README.md
+          sed -i "s/<!-- sonar_code_smells -->.*/<!-- sonar_code_smells -->Code Smells: $code_smells/" README.md
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git commit -m "Update SonarQube metrics in README.md"
+          git push
