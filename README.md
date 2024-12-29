@@ -6,6 +6,14 @@
 
 Respify is a C# library designed to standardize API responses. It provides a consistent structure for both paginated and non-paginated data, making it easier to handle API responses in a uniform way.
 
+[![NuGet](https://img.shields.io/nuget/v/Respify.svg)](https://www.nuget.org/packages/Respify/)
+[![NuGet](https://img.shields.io/nuget/dt/Respify.svg)](https://www.nuget.org/packages/Respify/)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=carlosbrunetti_Respify&metric=alert_status)](https://sonarcloud.io/dashboard?id=carlosbrunetti_Respify)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=carlosbrunetti_Respify&metric=coverage)](https://sonarcloud.io/dashboard?id=carlosbrunetti_Respify)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=carlosbrunetti_Respify&metric=bugs)](https://sonarcloud.io/dashboard?id=carlosbrunetti_Respify)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=carlosbrunetti_Respify&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=carlosbrunetti_Respify)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=carlosbrunetti_Respify&metric=code_smells)](https://sonarcloud.io/dashboard?id=carlosbrunetti_Respify)
+
 ## Installation
 
 To install Respify, you can add it to your project via NuGet Package Manager:
