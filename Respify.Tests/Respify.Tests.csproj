@@ -23,12 +23,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Respify\Respify.csproj" />
-      <ProjectReference Include="..\Respify\Respify.csproj" />
+        <ProjectReference Include="..\Respify\Respify.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="ResponseHelperTests.cs" />
+        <Compile Remove="ResponseHelperTests.cs" />
     </ItemGroup>
 
     <ItemGroup>
