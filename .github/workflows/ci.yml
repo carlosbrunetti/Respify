@@ -50,6 +50,12 @@ jobs:
           scannerMode: CLI
           token: ${{ secrets.SONAR_TOKEN }}
           url: ${{ secrets.SONAR_HOST_URL }}
+        env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+            SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+            
 
   publish:
     if: github.ref == 'refs/heads/main'
