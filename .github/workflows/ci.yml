@@ -42,7 +42,7 @@ jobs:
       run: dotnet build Respify/Respify.csproj --no-restore --configuration Release
 
     - name: Run tests
-      run: dotnet test Tests/Respify.Tests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+      run: dotnet test Respify.Tests/Respify.Tests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
 
     - name: Report to SonarQube
       uses: sonarsource/sonarcloud-github-action@v1
