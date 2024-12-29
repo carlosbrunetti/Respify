@@ -45,16 +45,23 @@ jobs:
       - name: SonarQube Scan
         uses: sonarsource/sonarcloud-github-action@v2
         with:
-          projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
-          organization: ${{ secrets.SONAR_ORGANIZATION }}
-          scannerMode: CLI
-          token: ${{ secrets.SONAR_TOKEN }}
-          url: ${{ secrets.SONAR_HOST_URL }}
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.sources=Respify
+            -Dsonar.tests=Respify.Tests
+            -Dsonar.cs.opencover.reportsPaths=Respify.Tests/TestResults/*/coverage.opencover.xml
+            -Dsonar.coverage.exclusions=**/bin/**,**/obj/**
+            -Dsonar.exclusions=Respify.Tests/**,Respify.Playground/**
+            projectBaseDir: '.'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          DOTNET_ROOT: /home/runner/.dotnet
             
 
   publish:
