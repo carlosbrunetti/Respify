@@ -97,5 +97,6 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add README.md
-          git commit -m "Update SonarQube metrics in README.md"
+          git add sonar_metrics.json
+          git commit -m "Update SonarQube metrics in README.md and sonar_metrics.json"
           git push https://x-access-token:${GH_PAT}@github.com/carlosbrunetti/Respify.git HEAD:${{ github.ref }}

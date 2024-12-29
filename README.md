@@ -14,11 +14,6 @@ Respify is a C# library designed to standardize API responses. It provides a con
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=carlosbrunetti_Respify&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=carlosbrunetti_Respify)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=carlosbrunetti_Respify&metric=code_smells)](https://sonarcloud.io/dashboard?id=carlosbrunetti_Respify)
 
-<!-- sonar_coverage -->Coverage: %
-<!-- sonar_bugs -->Bugs: 0
-<!-- sonar_vulnerabilities -->Vulnerabilities: 0
-<!-- sonar_code_smells -->Code Smells: 1
-
 ## Installation
 
 To install Respify, you can add it to your project via NuGet Package Manager:
