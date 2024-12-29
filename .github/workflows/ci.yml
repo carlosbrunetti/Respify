@@ -50,11 +50,11 @@ jobs:
     - name: Run tests
       run: dotnet test Respify.Tests/Respify.Tests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
 
-    - name: Setup latest Java
+    - name: Setup Java 17
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
-        java-version: 'latest'
+        java-version: '17'
     
     - name: Report to SonarQube
       uses: sonarsource/sonarcloud-github-action@v1
