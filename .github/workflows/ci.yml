@@ -61,8 +61,16 @@ jobs:
           -Dsonar.sources=Respify
           -Dsonar.tests=Respify.Tests
           -Dsonar.cs.opencover.reportsPaths=Respify.Tests/TestResults/*/coverage.opencover.xml
-
-    #- name: Publish to NuGet
+          -Dsonar.coverage.exclusions=**/bin/**,**/obj/**
+          -Dsonar.exclusions=Respify.Tests/**,Respify.Playground/**
+        projectBaseDir: '.'
+      env: 
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+        SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        DOTNET_ROOT: /home/runner/.dotnet
+      #- name: Publish to NuGet
       #if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
       #run: dotnet nuget push 'Respify/bin/Release/*.nupkg' --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --version ${{ env.VERSION }}
 
