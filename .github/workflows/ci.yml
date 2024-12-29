@@ -38,19 +38,12 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore Respify/Respify.csproj
 
-    - name: Build
+    - name: Build Respify project
       run: dotnet build Respify/Respify.csproj --no-restore --configuration Release
-      
-    - name: Verify test DLL exists
-      run: |
-        if [ ! -f Respify.Tests/bin/Release/net8.0/Respify.Tests.dll ]; then
-          echo "Test DLL not found."
-          exit 1
-        fi
-        
-    - name : list test output directory
-      run: ls -la Respify.Tests/bin/Release/net8.0
-      
+
+    - name: Build Respify.Tests project
+      run: dotnet build Respify.Tests/Respify.Tests.csproj --no-restore --configuration Release
+
     - name: Run tests
       run: dotnet test Respify.Tests/Respify.Tests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
 
