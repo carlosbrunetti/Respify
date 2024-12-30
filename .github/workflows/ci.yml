@@ -91,6 +91,13 @@ jobs:
           sed -i "s/<!-- sonar_vulnerabilities -->.*/<!-- sonar_vulnerabilities -->Vulnerabilities: $vulnerabilities/" README.md
           sed -i "s/<!-- sonar_code_smells -->.*/<!-- sonar_code_smells -->Code Smells: $code_smells/" README.md
 
+      - name: Check for changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          
       - name: Commit and push changes
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
@@ -101,3 +108,34 @@ jobs:
           git add sonar_metrics.json
           git commit -m "Update SonarQube metrics in README.md and sonar_metrics.json"
           git push https://x-access-token:${GH_PAT}@github.com/carlosbrunetti/Respify.git HEAD:${{ github.ref }}
+  
+  publish_nuget:
+    runs-on: ubuntu-latest
+    needs: sonar_scan
+    
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Check for version change
+        id: version_check
+        run: |
+          current_version=$(dotnet list package --include-transitive | grep -oP '(?<=Version: )\d+\.\d+\.\d+')
+          git fetch --tags
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+          if [ "$current_version" != "$latest_tag" ]; then
+            echo "::set-output name=version_changed::true"
+          else
+            echo "::set-output name=version_changed::false"
+          fi
+
+      - name: Publish to NuGet
+        if: steps.version_check.outputs.version_changed == 'true'
+        run: dotnet nuget push '**/*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
