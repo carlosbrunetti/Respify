@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Respify", "Respify\Respify.csproj", "{1C7717A5-5DDC-4D0E-9886-5B2E368842F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Respify.Tests", "Test\Respify.Tests\Respify.Tests.csproj", "{98FE6CF2-5D6E-4661-B865-521EBED175DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Respify.Tests", "Respify.Tests\Respify.Tests.csproj", "{98FE6CF2-5D6E-4661-B865-521EBED175DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Respify.Playground", "Respify.Playground\Respify.Playground.csproj", "{4E9A92BD-1250-46E8-AD63-5B34F2849AB9}"
 EndProject

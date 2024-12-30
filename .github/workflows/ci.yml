@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - 'feature/*'
+      - 'release/*'
+      - 'hotfix/*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+  sonar_scan:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarcloud-github-action@v2
+        with:
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.sources=Respify
+            -Dsonar.tests=Respify.Tests
+            -Dsonar.cs.opencover.reportsPaths=Respify.Tests/TestResults/*/coverage.opencover.xml
+            -Dsonar.coverage.exclusions=**/bin/**,**/obj/**
+            -Dsonar.exclusions=Respify.Tests/**,Respify.Playground/**
+          projectBaseDir: '.'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          DOTNET_ROOT: /home/runner/.dotnet
+
+#  update_readme:
+#    runs-on: ubuntu-latest
+#    needs: sonar_scan
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Fetch SonarQube metrics
+#        id: fetch_sonar_metrics
+#        run: |
+#          curl -u ${{ secrets.SONAR_TOKEN }}: \
+#            "${{ secrets.SONAR_HOST_URL }}/api/measures/component?component=${{ secrets.SONAR_PROJECT_KEY }}&metricKeys=coverage,bugs,vulnerabilities,code_smells" \
+#            -o sonar_metrics.json
+#
+#      - name: Update README.md
+#        run: |
+#          coverage=$(jq -r '.component.measures[] | select(.metric == "coverage") | .value' sonar_metrics.json)
+#          bugs=$(jq -r '.component.measures[] | select(.metric == "bugs") | .value' sonar_metrics.json)
+#          vulnerabilities=$(jq -r '.component.measures[] | select(.metric == "vulnerabilities") | .value' sonar_metrics.json)
+#          code_smells=$(jq -r '.component.measures[] | select(.metric == "code_smells") | .value' sonar_metrics.json)
+
+#          sed -i "s/<!-- sonar_coverage -->.*/<!-- sonar_coverage -->Coverage: $coverage%/" README.md
+#          sed -i "s/<!-- sonar_bugs -->.*/<!-- sonar_bugs -->Bugs: $bugs/" README.md
+#          sed -i "s/<!-- sonar_vulnerabilities -->.*/<!-- sonar_vulnerabilities -->Vulnerabilities: $vulnerabilities/" README.md
+#          sed -i "s/<!-- sonar_code_smells -->.*/<!-- sonar_code_smells -->Code Smells: $code_smells/" README.md
+
+#      - name: Check for changes
+#        run: |
+#          if git diff --quiet; then
+#            echo "No changes to commit"
+#            exit 0
+#          fi
+#          
+#      - name: Commit and push changes
+#        env:
+#          GH_PAT: ${{ secrets.GH_PAT }}
+#        run: |
+#          git config --global user.name 'github-actions[bot]'
+#          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+#          git add README.md
+#          git add sonar_metrics.json
+#          git commit -m "Update SonarQube metrics in README.md and sonar_metrics.json"
+#          git push https://x-access-token:${GH_PAT}@github.com/carlosbrunetti/Respify.git HEAD:${{ github.ref }}
+#  
+  publish_nuget:
+    runs-on: ubuntu-latest
+    needs: sonar_scan
+    
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Check for version change
+        id: version_check
+        run: |
+          current_version=$(dotnet list package --include-transitive | grep -oP '(?<=Version: )\d+\.\d+\.\d+')
+          git fetch --tags
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+          if [ "$current_version" != "$latest_tag" ]; then
+            echo "::set-output name=version_changed::true"
+          else
+            echo "::set-output name=version_changed::false"
+          fi
+
+      - name: Publish to NuGet
+        if: steps.version_check.outputs.version_changed == 'true'
+        run: dotnet nuget push '**/*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
