@@ -3,7 +3,7 @@ using Respify.helpers;
 using Respify.Tests.helpers.@class;
 using Respify.Tests.helpers.generator;
 
-namespace Respify.Tests.unity.helpers;
+namespace Respify.Tests.unit.helpers;
 
 public class ResponseHelperTests
 {
