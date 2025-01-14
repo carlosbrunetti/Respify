@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Respify.Tests.unity.classes;
+namespace Respify.Tests.unit.classes;
 
 public class RespifyResponseTests
 {
